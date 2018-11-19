@@ -1,7 +1,8 @@
 {
-  "name": "si18n",
+  "name": "lang-text",
   "version": "0.0.1",
   "description": "Simple/Safe/Strong i18n nodejs module",
+  "private": false,
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
@@ -21,18 +22,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mitica/si18n.git"
+    "url": "git+https://github.com/Mitica/lang-text.git"
   },
   "keywords": [
     "i18n",
-    "si18n"
+    "lang-text"
   ],
   "author": "Dumitru Cantea",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Mitica/si18n/issues"
+    "url": "https://github.com/Mitica/lang-text/issues"
   },
-  "homepage": "https://github.com/Mitica/si18n#readme",
+  "homepage": "https://github.com/Mitica/lang-text#readme",
   "devDependencies": {
     "@types/node": "10.12.9",
     "@types/sprintf-js": "^1.1.1",

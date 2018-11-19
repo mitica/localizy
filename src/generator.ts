@@ -37,7 +37,7 @@ export function generateClass(data: { [lang: string]: FormatKeys }, options?: Ge
     }, {});
 
     const code = `
-import { Provider, Translator, ProviderOptions, DirectoryProviderOptions, parseDirectory } from 'si18n';
+import { Provider, Translator, ProviderOptions, DirectoryProviderOptions, parseDirectory } from 'lang-text';
 
 export class ${className} {
     private provider: Provider

@@ -1,6 +1,6 @@
 {
   "name": "si18n",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Simple/Safe/Strong i18n nodejs module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

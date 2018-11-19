@@ -16,8 +16,8 @@ export class Translator {
         this.defaultKeys = options.defaultKeys && { ...options.defaultKeys } || undefined;
     }
 
-    t(key: string, args?: any[], context?: TranslatorContext) {
-        const format = this.getFormat(key, args, context);
+    t(key: string, args?: any[], options?: { context: TranslatorContext }) {
+        const format = this.getFormat(key, args, options && options.context);
         return vsprintf(format, args || []);
     }
 
@@ -67,14 +67,14 @@ export class Translator {
         }
 
         for (const item of value) {
-            let min = item[0] === null ? Number.MIN_VALUE : item[0];
-            let max = item[1] === null ? Number.MAX_VALUE : item[1];
+            let min = item[0] === null ? Number.MIN_VALUE : item[0] as number;
+            let max = item[1] === null ? Number.MAX_VALUE : item[1] as number;
 
             if (min <= count && count <= max) {
                 return item[2];
             }
         }
 
-        return value[0][2];
+        return value[value.length - 1][2];
     }
 }

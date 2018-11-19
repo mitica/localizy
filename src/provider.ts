@@ -1,23 +1,26 @@
 import { FormatKeys } from "./format";
 import { Translator } from "./translator";
+import { parseDirectory } from "./parser";
 
 export type ProviderOptions = {
     throwUndefinedKey?: boolean
     defaultLanguage?: string
-    data: { [lang: string]: FormatKeys }
+    data: ProviderData
 }
+
+export type ProviderData = { [lang: string]: FormatKeys }
 
 export class Provider {
     private defaultLanguage?: string
     private throwUndefinedKey: boolean
-    private data: { [lang: string]: FormatKeys }
+    private data: ProviderData
     private translators: { [lang: string]: Translator } = {}
 
     constructor(options: ProviderOptions) {
         this.throwUndefinedKey = options.throwUndefinedKey === undefined
             ? true
             : options.throwUndefinedKey;
-            
+
         this.defaultLanguage = options.defaultLanguage;
         this.data = { ...options.data };
 
@@ -45,4 +48,23 @@ export class Provider {
 
         return this.translators[lang];
     }
+}
+
+export type DirectoryProviderOptions = {
+    directory: string
+    languages?: string[]
+    defaultLanguage?: string
+    throwUndefinedKey?: boolean
+}
+
+export function createDirectoryProvider(options: DirectoryProviderOptions) {
+    const { directory, defaultLanguage, throwUndefinedKey, languages } = options;
+
+    const data = parseDirectory({ directory, languages });
+
+    return new Provider({
+        defaultLanguage,
+        throwUndefinedKey,
+        data,
+    })
 }

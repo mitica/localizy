@@ -1,3 +1,4 @@
+
 export {
     createDirectoryProvider,
     DirectoryProviderOptions,
@@ -21,3 +22,7 @@ export {
 export {
     parseDirectory,
 } from './parser';
+
+// const code = generateClass({ro:{hello:{value: 'Hello'}}});
+
+// writeFileSync('src/code.ts', code, 'utf8');

@@ -39,16 +39,21 @@ export function generateClass(data: { [lang: string]: FormatKeys }, options?: Ge
     const code = `
 import { Provider, Translator, ProviderOptions, DirectoryProviderOptions, parseDirectory } from 'lang-text';
 
-export class ${className} {
+export class ${className}<T extends GeneratedTranslator = GeneratedTranslator> {
     private provider: Provider
-    private translators: { [lang: string]: GeneratedTranslator } = {}
-    constructor(options: ProviderOptions) {
+    private translators: { [lang: string]: T } = {}
+
+    constructor(options: ProviderOptions, private createTranslator?: (t: Translator) => T) {
         this.provider = new Provider(options);
     }
 
     translator(lang: string) {
-        if(!this.translators[lang]) {
-            this.translators[lang] = new GeneratedTranslator(this.provider.translator(lang));
+        if (!this.translators[lang]) {
+            if (this.createTranslator) {
+                this.translators[lang] = this.createTranslator(this.provider.translator(lang));
+            } else {
+                this.translators[lang] = new GeneratedTranslator(this.provider.translator(lang)) as T;
+            }
         }
 
         return this.translators[lang];
@@ -67,7 +72,7 @@ export class ${className} {
     }
 }
 
-class GeneratedTranslator {
+export class GeneratedTranslator {
     private __translator: Translator
     constructor(translator: Translator) {
         this.__translator = translator;
@@ -85,7 +90,7 @@ class GeneratedTranslator {
             if (keysData[key].context) {
                 params.push('_options?: {context: {[index: string]: string | number}}');
             }
-            const head = `${key}(${params.join(', ')})`;
+            const head = `${formatFunctionName(key)}(${params.join(', ')})`;
             const body = `const args = Array.from(arguments);
         return this.v(args[0] as TranslatorKey, args.slice(1));`;
 
@@ -97,7 +102,7 @@ class GeneratedTranslator {
         }).join('')}
 }
 
-type TranslatorKey = ${keys.map(key => `'${key}'`).join('\n    | ')};
+export type TranslatorKey = ${keys.map(key => `'${key}'`).join('\n    | ') || 'string'};
 `;
 
     return code;
@@ -106,4 +111,12 @@ type TranslatorKey = ${keys.map(key => `'${key}'`).join('\n    | ')};
 
 export interface GenerateOptions {
     className?: string
+}
+
+function formatFunctionName(key: string) {
+    if (/^\d+/.test(key)) {
+        key = '$' + key;
+    }
+
+    return key;
 }

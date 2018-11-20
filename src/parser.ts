@@ -14,7 +14,7 @@ export function parseJsonData(data: any) {
 
 export function parseDirectory(options: { directory: string, languages?: string[] }) {
     const directory = options.directory;
-    const languages = options.languages || [];
+    const languages = options.languages;
     const files = readdirSync(directory, 'utf8');
 
     const data: { [lang: string]: FormatKeys } = {};
@@ -24,7 +24,7 @@ export function parseDirectory(options: { directory: string, languages?: string[
             continue;
         }
         const language = fileName.substr(0, fileName.length - 5);
-        if (languages.indexOf(language) < 0) {
+        if (languages && languages.indexOf(language) < 0) {
             continue;
         }
         const file = join(directory, fileName);

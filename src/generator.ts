@@ -91,8 +91,7 @@ export class GeneratedTranslator {
                 params.push('_options?: {context: {[index: string]: string | number}}');
             }
             const head = `${formatFunctionName(key)}(${params.join(', ')})`;
-            const body = `const args = Array.from(arguments);
-        return this.v(args[0] as TranslatorKey, args.slice(1));`;
+            const body = `return this.v('${key}', Array.from(arguments));`;
 
             return `
 

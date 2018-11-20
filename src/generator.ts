@@ -12,12 +12,12 @@ export function generateFromDirectory(options: GenerateDirecatoryOptions) {
     const { directory, languages } = options;
     const data = parseDirectory({ directory, languages });
 
-    return generateClass(data, options);
+    return generateCode(data, options);
 }
 
-export function generateClass(data: { [lang: string]: FormatKeys }, options?: GenerateOptions) {
+export function generateCode(data: { [lang: string]: FormatKeys }, options?: GenerateOptions) {
     options = options || {};
-    const className = options.className || 'TranslatorProvider';
+    const className = options.className || 'LocalesProvider';
 
     const keysData = Object.keys(data).reduce<FormatKeys>((container, lang) => {
         container = Object.assign(container, data[lang]);
@@ -37,29 +37,29 @@ export function generateClass(data: { [lang: string]: FormatKeys }, options?: Ge
     }, {});
 
     const code = `
-import { Provider, Translator, ProviderOptions, DirectoryProviderOptions, parseDirectory } from 'lang-text';
+import { Locales, Translator, TranslatorOptions, DirectoryTranslatorOptions, parseDirectory } from 'lang-text';
 
-export class ${className}<T extends GeneratedTranslator = GeneratedTranslator> {
-    private provider: Provider
-    private translators: { [lang: string]: T } = {}
+export class ${className}<T extends GeneratedLocales = GeneratedLocales> {
+    private translator: Translator
+    private localesMap: { [lang: string]: T } = {}
 
-    constructor(options: ProviderOptions, private createTranslator?: (t: Translator) => T) {
-        this.provider = new Provider(options);
+    constructor(options: TranslatorOptions, private createLocales?: (t: Locales) => T) {
+        this.translator = new Translator(options);
     }
 
-    translator(lang: string) {
-        if (!this.translators[lang]) {
-            if (this.createTranslator) {
-                this.translators[lang] = this.createTranslator(this.provider.translator(lang));
+    locales(lang: string) {
+        if (!this.localesMap[lang]) {
+            if (this.createLocales) {
+                this.localesMap[lang] = this.createLocales(this.translator.locales(lang));
             } else {
-                this.translators[lang] = new GeneratedTranslator(this.provider.translator(lang)) as T;
+                this.localesMap[lang] = new GeneratedLocales(this.translator.locales(lang)) as T;
             }
         }
 
-        return this.translators[lang];
+        return this.localesMap[lang];
     }
 
-    static createFromDirectory(options: DirectoryProviderOptions) {
+    static createFromDirectory(options: DirectoryTranslatorOptions) {
         const { directory, defaultLanguage, throwUndefinedKey, languages } = options;
 
         const data = parseDirectory({ directory, languages });
@@ -72,18 +72,18 @@ export class ${className}<T extends GeneratedTranslator = GeneratedTranslator> {
     }
 }
 
-export class GeneratedTranslator {
-    private __translator: Translator
-    constructor(translator: Translator) {
-        this.__translator = translator;
+export class GeneratedLocales {
+    protected __locales: Locales
+    constructor(locales: Locales) {
+        this.__locales = locales;
     }
 
-    s(key: TranslatorKey, ...args: any[]) {
+    s(key: LocalesKey, ...args: any[]) {
         return this.v(key, args);
     }
 
-    v(key: TranslatorKey, args?: any[]) {
-        return this.__translator.t(key, args);
+    v(key: LocalesKey, args?: any[]) {
+        return this.__locales.t(key, args);
     }
     ${keys.map(key => {
             const params = keysParams[key].map(item => '_' + item.name + ': ' + item.type.join('|'));
@@ -91,7 +91,9 @@ export class GeneratedTranslator {
                 params.push('_options?: {context: {[index: string]: string | number}}');
             }
             const head = `${formatFunctionName(key)}(${params.join(', ')})`;
-            const body = `return this.v('${key}', Array.from(arguments));`;
+            const body = params.length
+                ? `return this.v('${key}', Array.from(arguments));`
+                : `return this.v('${key}');`;
 
             return `
 
@@ -101,7 +103,7 @@ export class GeneratedTranslator {
         }).join('')}
 }
 
-export type TranslatorKey = ${keys.map(key => `'${key}'`).join('\n    | ') || 'string'};
+export type LocalesKey = ${keys.map(key => `'${key}'`).join('\n    | ') || 'string'};
 `;
 
     return code;

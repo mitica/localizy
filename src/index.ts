@@ -1,19 +1,18 @@
-
 export {
-    createDirectoryProvider,
-    DirectoryProviderOptions,
-    Provider,
-    ProviderOptions,
-} from './provider';
-
-export {
+    createDirectoryTranslator,
+    DirectoryTranslatorOptions,
     Translator,
-    TranslatorContext,
     TranslatorOptions,
 } from './translator';
 
 export {
-    generateClass,
+    Locales,
+    LocalesContext,
+    LocalesOptions,
+} from './locales';
+
+export {
+    generateCode,
     generateFromDirectory,
     GenerateDirecatoryOptions,
     GenerateOptions,
@@ -23,6 +22,6 @@ export {
     parseDirectory,
 } from './parser';
 
-// const code = generateClass({ro:{hello:{value: 'Hello'}}});
+// const code = generateCode({ ro: {} });
 
 // writeFileSync('src/code.ts', code, 'utf8');

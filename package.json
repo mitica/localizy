@@ -1,6 +1,6 @@
 {
   "name": "lang-text",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple/Safe/Strong i18n nodejs module",
   "private": false,
   "main": "./lib/index.js",

@@ -1,5 +1,5 @@
 {
-  "name": "lang-text",
+  "name": "localizy",
   "version": "0.1.0",
   "description": "Simple/Safe/Strong i18n nodejs module",
   "private": false,
@@ -22,18 +22,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mitica/lang-text.git"
+    "url": "git+https://github.com/Mitica/localizy.git"
   },
   "keywords": [
     "i18n",
-    "lang-text"
+    "localizy"
   ],
   "author": "Dumitru Cantea",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Mitica/lang-text/issues"
+    "url": "https://github.com/Mitica/localizy/issues"
   },
-  "homepage": "https://github.com/Mitica/lang-text#readme",
+  "homepage": "https://github.com/Mitica/localizy#readme",
   "devDependencies": {
     "@types/node": "10.12.9",
     "@types/sprintf-js": "^1.1.1",

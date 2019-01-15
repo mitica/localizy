@@ -1,6 +1,6 @@
 {
   "name": "localizy",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Simple/Safe/Strong i18n nodejs module",
   "private": false,
   "main": "./lib/index.js",

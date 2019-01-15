@@ -1,4 +1,4 @@
-import { parseKeys, FormatKeys } from "./format";
+import { parseKeys, FormatKeys } from "../format";
 import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 

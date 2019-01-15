@@ -16,11 +16,11 @@ export {
     generateFromDirectory,
     GenerateDirecatoryOptions,
     GenerateOptions,
-} from './generator';
+} from './generate/generator';
 
 export {
     parseDirectory,
-} from './parser';
+} from './generate/parser';
 
 // const code = generateCode({ ro: {} });
 

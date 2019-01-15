@@ -20,6 +20,9 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "bin": {
+    "localizy": "./bin/localizy"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mitica/localizy.git"
@@ -38,6 +41,7 @@
     "@types/node": "10.12.9",
     "@types/sprintf-js": "^1.1.1",
     "ava": "^0.25.0",
+    "commander": "^2.19.0",
     "rimraf": "^2.6.2",
     "typescript": "3.1.6"
   },

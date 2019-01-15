@@ -1,6 +1,6 @@
 import { FormatKeys } from "./format";
 import { Locales } from "./locales";
-import { parseDirectory } from "./parser";
+import { parseDirectory } from "./generate/parser";
 
 export type TranslatorOptions = {
     throwUndefinedKey?: boolean

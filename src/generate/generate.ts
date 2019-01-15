@@ -1,7 +1,8 @@
 import program = require('commander');
 import { join } from 'path';
-import { generateFromDirectory, DEFAULT_PROVIDER_NAME } from './generator';
+import { DEFAULT_PROVIDER_NAME, GenerateDirecatoryOptions, generateCode } from './generator';
 import { writeFileSync } from 'fs';
+import { TranslationKeys, parseTranslationData } from '../translation';
 
 program
     .version('0.1.0')
@@ -39,3 +40,44 @@ async function run() {
 run()
     .then(() => console.log('OK!'))
     .catch(e => console.trace(e));
+
+
+function generateFromDirectory(options: GenerateDirecatoryOptions) {
+    const { directory, languages } = options;
+    const data = parseDirectory({ directory, languages });
+
+    return generateCode(data, options);
+}
+
+function parseDirectory(options: { directory: string, languages?: string[] }) {
+    const readdirSync = require("fs").readdirSync;
+    const join = require("path").join;
+    const directory = options.directory;
+    const languages = options.languages;
+    const files = readdirSync(directory, 'utf8');
+
+    const data: { [lang: string]: TranslationKeys } = {};
+
+    for (const fileName of files) {
+        if (!/\.json$/.test(fileName)) {
+            continue;
+        }
+        const language = fileName.substr(0, fileName.length - 5);
+        if (languages && languages.indexOf(language) < 0) {
+            continue;
+        }
+        const file = join(directory, fileName);
+        const keys = parseJsonFile(file);
+
+        data[language] = keys;
+    }
+
+    return data;
+}
+
+function parseJsonFile(file: string) {
+    const readFileSync = require("fs").readFileSync;
+    const content = JSON.parse(readFileSync(file, 'utf8'));
+
+    return parseTranslationData(content);
+}

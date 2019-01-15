@@ -1,6 +1,5 @@
 import { TranslationKeys } from "./translation";
 import { Locales } from "./locales";
-import { parseDirectory } from "./generate/parser";
 
 export type TranslatorOptions = {
     throwUndefinedKey?: boolean
@@ -50,23 +49,4 @@ export class Translator {
 
         return this.localesMap[language];
     }
-}
-
-export type DirectoryTranslatorOptions = {
-    directory: string
-    languages?: string[]
-    defaultLanguage?: string
-    throwUndefinedKey?: boolean
-}
-
-export function createDirectoryTranslator(options: DirectoryTranslatorOptions) {
-    const { directory, defaultLanguage, throwUndefinedKey, languages } = options;
-
-    const data = parseDirectory({ directory, languages });
-
-    return new Translator({
-        defaultLanguage,
-        throwUndefinedKey,
-        data,
-    })
 }

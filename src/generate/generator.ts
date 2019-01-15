@@ -1,4 +1,3 @@
-import { parseDirectory } from "./parser";
 import { TranslationKeys } from "../translation";
 import { parseParams, TsParam } from 'sprintf-ts';
 
@@ -8,13 +7,6 @@ export const DEFAULT_PROVIDER_NAME = 'LocalizyLocalesProvider';
 export interface GenerateDirecatoryOptions extends GenerateOptions {
     directory: string
     languages?: string[]
-}
-
-export function generateFromDirectory(options: GenerateDirecatoryOptions) {
-    const { directory, languages } = options;
-    const data = parseDirectory({ directory, languages });
-
-    return generateCode(data, options);
 }
 
 export function generateCode(data: { [lang: string]: TranslationKeys }, options?: GenerateOptions) {

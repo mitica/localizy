@@ -1,5 +1,4 @@
 import { parseTranslationData, TranslationKeys } from "../translation";
-import { join } from "path";
 
 export function parseJsonFile(file: string) {
     const readFileSync = require("fs").readFileSync;
@@ -14,6 +13,7 @@ export function parseJsonData(data: any) {
 
 export function parseDirectory(options: { directory: string, languages?: string[] }) {
     const readdirSync = require("fs").readdirSync;
+    const join = require("path").join;
     const directory = options.directory;
     const languages = options.languages;
     const files = readdirSync(directory, 'utf8');

@@ -1,19 +1,19 @@
-import { FormatKeys, FormatKeyContext, FormatKeyValue } from "./format";
+import { TranslationKeys, TranslationKeyContext, TranslationKeyValue } from "./translation";
 import { vsprintf } from 'sprintf-js';
 
 export type LocalesOptions = {
     throwUndefinedKey: boolean
-    defaultKeys?: FormatKeys
+    defaultKeys?: TranslationKeys
     language: string
 }
 export type LocalesContext = { [index: string]: any }
 
 export class Locales {
     private throwUndefinedKey: boolean
-    private defaultKeys?: FormatKeys
+    private defaultKeys?: TranslationKeys
     private _language: string
 
-    constructor(private keys: FormatKeys, options: LocalesOptions) {
+    constructor(private keys: TranslationKeys, options: LocalesOptions) {
         this._language = options.language;
         this.throwUndefinedKey = options.throwUndefinedKey;
         this.defaultKeys = options.defaultKeys && { ...options.defaultKeys } || undefined;
@@ -45,7 +45,7 @@ export class Locales {
         return this.getFormatValue(key.value, args);
     }
 
-    protected getContextFormat(keyContext: FormatKeyContext, context: LocalesContext, args?: any[]) {
+    protected getContextFormat(keyContext: TranslationKeyContext, context: LocalesContext, args?: any[]) {
         for (const item of keyContext) {
             let match = true;
             for (const prop of Object.keys(item.matches)) {
@@ -60,7 +60,7 @@ export class Locales {
         }
     }
 
-    protected getFormatValue(value: FormatKeyValue, args?: any[]) {
+    protected getFormatValue(value: TranslationKeyValue, args?: any[]) {
         if (!Array.isArray(value)) {
             return value;
         }

@@ -1,5 +1,5 @@
 import { parseDirectory } from "./parser";
-import { FormatKeys } from "../format";
+import { TranslationKeys } from "../translation";
 import { parseParams, TsParam } from 'sprintf-ts';
 
 export const DEFAULT_PROVIDER_NAME = 'LocalizyLocalesProvider';
@@ -17,11 +17,11 @@ export function generateFromDirectory(options: GenerateDirecatoryOptions) {
     return generateCode(data, options);
 }
 
-export function generateCode(data: { [lang: string]: FormatKeys }, options?: GenerateOptions) {
+export function generateCode(data: { [lang: string]: TranslationKeys }, options?: GenerateOptions) {
     options = options || {};
     const className = options.className || DEFAULT_PROVIDER_NAME;
 
-    const keysData = Object.keys(data).reduce<FormatKeys>((container, lang) => {
+    const keysData = Object.keys(data).reduce<TranslationKeys>((container, lang) => {
         container = Object.assign(container, data[lang]);
         return container;
     }, {});

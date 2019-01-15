@@ -1,4 +1,4 @@
-import { FormatKeys } from "./format";
+import { TranslationKeys } from "./translation";
 import { Locales } from "./locales";
 import { parseDirectory } from "./generate/parser";
 
@@ -8,7 +8,7 @@ export type TranslatorOptions = {
     data: TranslatorData
 }
 
-export type TranslatorData = { [lang: string]: FormatKeys }
+export type TranslatorData = { [lang: string]: TranslationKeys }
 
 export class Translator {
     private defaultLanguage?: string

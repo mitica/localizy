@@ -1,13 +1,13 @@
 
-export function parseKeys(data: { [index: string]: any }): FormatKeys {
+export function parseTranslationData(data: { [index: string]: any }): TranslationKeys {
     return Object.keys(data)
-        .reduce<FormatKeys>((keys, key) => {
-            keys[key] = parseFormatKey(key, data[key])
+        .reduce<TranslationKeys>((keys, key) => {
+            keys[key] = parseTranslationKey(key, data[key])
             return keys;
         }, {});
 }
 
-export function simplifyKeys(data: FormatKeys): { [index: string]: any } {
+export function simplifyTranslationKeys(data: TranslationKeys): { [index: string]: any } {
     return Object.keys(data)
         .reduce<{ [index: string]: any }>((keys, key) => {
             keys[key] = simplifyKeyValue(data[key].value, data[key].context);
@@ -15,23 +15,23 @@ export function simplifyKeys(data: FormatKeys): { [index: string]: any } {
         }, {});
 }
 
-export type FormatKeys = { [key: string]: FormatKey }
+export type TranslationKeys = { [key: string]: TranslationKey }
 
-export type FormatKey = {
-    value: FormatKeyValue
-    context?: FormatKeyContext
+export type TranslationKey = {
+    value: TranslationKeyValue
+    context?: TranslationKeyContext
 }
 
-export type FormatKeyValue = string | FormatKeyCountValue[]
-export type FormatKeyCountValue = [number | null, number | null, string]
-export type FormatKeyContext = FormatKeyContextItem[]
-export type FormatKeyContextItem = { value: FormatKeyValue, matches: FormatKeyContextMatches }
-export type FormatKeyContextMatches = { [index: string]: string | number | null | undefined }
+export type TranslationKeyValue = string | TranslationKeyCountValue[]
+export type TranslationKeyCountValue = [number | null, number | null, string]
+export type TranslationKeyContext = TranslationKeyContextItem[]
+export type TranslationKeyContextItem = { value: TranslationKeyValue, matches: TranslationKeyContextMatches }
+export type TranslationKeyContextMatches = { [index: string]: string | number | null | undefined }
 
-function parseFormatKey(key: string, data: any): FormatKey {
+function parseTranslationKey(key: string, data: any): TranslationKey {
     if (isValidValue(data)) {
         return {
-            value: data as FormatKeyValue,
+            value: data as TranslationKeyValue,
         }
     }
     if (!data.value) {
@@ -41,8 +41,8 @@ function parseFormatKey(key: string, data: any): FormatKey {
         throw new Error(`Invalid key value: ${key}`);
     }
 
-    const keyData: FormatKey = {
-        value: data.value as FormatKeyValue,
+    const keyData: TranslationKey = {
+        value: data.value as TranslationKeyValue,
     }
 
     if (Array.isArray(data.context)) {
@@ -62,11 +62,11 @@ function parseFormatKey(key: string, data: any): FormatKey {
     return keyData;
 }
 
-function isValidValue(value: FormatKeyValue) {
+function isValidValue(value: TranslationKeyValue) {
     return typeof value === 'string' || Array.isArray(value) && value.length > 0;
 }
 
-function simplifyKeyValue(value: FormatKeyValue, context?: FormatKeyContext) {
+function simplifyKeyValue(value: TranslationKeyValue, context?: TranslationKeyContext) {
     if (context) {
         return {
             value,

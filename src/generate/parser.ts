@@ -1,4 +1,4 @@
-import { parseKeys, FormatKeys } from "../format";
+import { parseTranslationData, TranslationKeys } from "../translation";
 import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 
@@ -9,7 +9,7 @@ export function parseJsonFile(file: string) {
 }
 
 export function parseJsonData(data: any) {
-    return parseKeys(data);
+    return parseTranslationData(data);
 }
 
 export function parseDirectory(options: { directory: string, languages?: string[] }) {
@@ -17,7 +17,7 @@ export function parseDirectory(options: { directory: string, languages?: string[
     const languages = options.languages;
     const files = readdirSync(directory, 'utf8');
 
-    const data: { [lang: string]: FormatKeys } = {};
+    const data: { [lang: string]: TranslationKeys } = {};
 
     for (const fileName of files) {
         if (!/\.json$/.test(fileName)) {

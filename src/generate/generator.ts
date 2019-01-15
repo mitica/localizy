@@ -2,7 +2,7 @@ import { parseDirectory } from "./parser";
 import { FormatKeys } from "../format";
 import { parseParams, TsParam } from 'sprintf-ts';
 
-export const DEFAULT_PROVIDER_NAME = 'LocalesProvider';
+export const DEFAULT_PROVIDER_NAME = 'LocalizyLocalesProvider';
 
 
 export interface GenerateDirecatoryOptions extends GenerateOptions {
@@ -41,7 +41,7 @@ export function generateCode(data: { [lang: string]: FormatKeys }, options?: Gen
     const code = `
 import { Locales, Translator, TranslatorOptions } from 'localizy';
 
-export class ${className}<T extends GeneratedLocales = GeneratedLocales> {
+export class ${className}<T extends LocalizyLocales = LocalizyLocales> {
     private translator: Translator
     private localesMap: { [lang: string]: T } = {}
 
@@ -49,7 +49,7 @@ export class ${className}<T extends GeneratedLocales = GeneratedLocales> {
         this.translator = new Translator(options);
     }
 
-    locales(lang: string) {
+    lang(lang: string) {
         if (!this.localesMap[lang]) {
             this.localesMap[lang] = this.createInstance(this.translator.locales(lang)) as T;
         }
@@ -58,11 +58,11 @@ export class ${className}<T extends GeneratedLocales = GeneratedLocales> {
     }
 
     protected createInstance(t: Locales): T {
-        return new GeneratedLocales(t) as T;
+        return new LocalizyLocales(t) as T;
     }
 }
 
-export class GeneratedLocales {
+export class LocalizyLocales {
     protected __locales: Locales
     constructor(locales: Locales) {
         this.__locales = locales;

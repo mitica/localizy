@@ -1,6 +1,6 @@
 {
   "name": "localizy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple/Safe/Strong i18n nodejs module",
   "private": false,
   "main": "./lib/index.js",
@@ -29,7 +29,8 @@
   },
   "keywords": [
     "i18n",
-    "localizy"
+    "localizy",
+    "sprintf"
   ],
   "author": "Dumitru Cantea",
   "license": "ISC",

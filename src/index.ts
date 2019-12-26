@@ -1,26 +1,20 @@
 export {
-    createDirectoryTranslator,
-    DirectoryTranslatorOptions,
-    Translator,
-    TranslatorOptions,
-} from './translator';
+  createDirectoryTranslator,
+  DirectoryTranslatorOptions,
+  Translator,
+  TranslatorOptions
+} from "./translator";
+
+export { Locales, LocalesContext, LocalesOptions } from "./locales";
 
 export {
-    Locales,
-    LocalesContext,
-    LocalesOptions,
-} from './locales';
+  generateCode,
+  generateFromDirectory,
+  GenerateDirecatoryOptions,
+  GenerateOptions
+} from "./generator";
 
-export {
-    generateCode,
-    generateFromDirectory,
-    GenerateDirecatoryOptions,
-    GenerateOptions,
-} from './generator';
-
-export {
-    parseDirectory,
-} from './parser';
+export { parseDirectory } from "./parser";
 
 // const code = generateCode({ ro: {} });
 

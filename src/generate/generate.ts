@@ -7,9 +7,8 @@ import {
 } from "./generator";
 import { writeFileSync } from "fs";
 import { TranslationKeys, parseTranslationData } from "../translation";
-
-program.program
-  .version("0.1.0")
+const p = program.program;
+p.version("0.1.0")
   .option("-o, --output <value>", "Output path to directory or file(.ts)")
   .option(
     "-d, --directory <value>",
@@ -17,7 +16,7 @@ program.program
   )
   .option("-c, --className [value]", "Class name to be generated")
   .parse(process.argv);
-const options = program.opts();
+const options = p.opts();
 let output: string = options.output || process.cwd();
 const directory = options.directory as string;
 const className = (options.className as string) || DEFAULT_PROVIDER_NAME;

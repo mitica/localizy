@@ -1,36 +1,46 @@
 import { TranslationKeys } from "../translation";
-import { parseParams, TsParam } from 'sprintf-ts';
+import { parseParams, TsParam } from "sprintf-ts";
 
-export const DEFAULT_PROVIDER_NAME = 'LocalizyLocalesProvider';
-
+export const DEFAULT_PROVIDER_NAME = "LocalizyLocalesProvider";
 
 export interface GenerateDirecatoryOptions extends GenerateOptions {
-    directory: string
-    languages?: string[]
+  directory: string;
+  languages?: string[];
 }
 
-export function generateCode(data: { [lang: string]: TranslationKeys }, options?: GenerateOptions) {
-    options = options || {};
-    const className = options.className || DEFAULT_PROVIDER_NAME;
+export function generateCode(
+  data: { [lang: string]: TranslationKeys },
+  options?: GenerateOptions
+) {
+  options = options || {};
+  const className = options.className || DEFAULT_PROVIDER_NAME;
 
-    const keysData = Object.keys(data).reduce<TranslationKeys>((container, lang) => {
-        container = Object.assign(container, data[lang]);
-        return container;
-    }, {});
+  const keysData = Object.keys(data).reduce<TranslationKeys>(
+    (container, lang) => {
+      container = Object.assign(container, data[lang]);
+      return container;
+    },
+    {}
+  );
 
-    const keys = Object.keys(keysData);
+  const keys = Object.keys(keysData);
 
-    const keysParams = keys.reduce<{ [index: string]: TsParam[] }>((container, key) => {
-        const item = keysData[key];
-        const format = Array.isArray(item.value) ? item.value[item.value.length - 1][2] : item.value;
-        const params = parseParams(format);
+  const keysParams = keys.reduce<{ [index: string]: TsParam[] }>(
+    (container, key) => {
+      const item = keysData[key];
+      const format = Array.isArray(item.value)
+        ? item.value[item.value.length - 1][2]
+        : item.value;
+      const params = parseParams(format);
 
-        container[key] = params;
+      container[key] = params;
 
-        return container;
-    }, {});
+      return container;
+    },
+    {}
+  );
 
-    const code = `
+  const code = `
 import { Locales, Translator, TranslatorOptions } from 'localizy';
 
 export class ${className}<T extends LocalizyLocales = LocalizyLocales> {
@@ -67,39 +77,46 @@ export class LocalizyLocales {
     v(key: LocalesKey, args?: any[]) {
         return this.__locales.t(key, args);
     }
-    ${keys.map(key => {
-        const params = keysParams[key].map(item => '_' + item.name + ': ' + item.type.join('|'));
+    ${keys
+      .map((key) => {
+        const params = keysParams[key].map(
+          (item) => "_" + item.name + ": " + item.type.join("|")
+        );
         if (keysData[key].context) {
-            params.push('_options?: {context: {[index: string]: string | number}}');
+          params.push(
+            "_options?: {context: {[index: string]: string | number}}"
+          );
         }
-        const head = `${formatFunctionName(key)}(${params.join(', ')})`;
+        const head = `${formatFunctionName(key)}(${params.join(", ")})`;
         const body = params.length
-            ? `return this.v('${key}', Array.from(arguments));`
-            : `return this.v('${key}');`;
+          ? `return this.v('${key}', Array.from(arguments));`
+          : `return this.v('${key}');`;
 
         return `
 
     ${head} {
         ${body}
     }`;
-    }).join('')}
+      })
+      .join("")}
 }
 
-export type LocalesKey = ${keys.map(key => `'${key}'`).join('\n    | ') || 'string'};
+export type LocalesKey = ${
+    keys.map((key) => `'${key}'`).join("\n    | ") || "string"
+  };
 `;
 
-    return code;
+  return code;
 }
 
-
 export interface GenerateOptions {
-    className?: string
+  className?: string;
 }
 
 function formatFunctionName(key: string) {
-    if (/^\d+/.test(key)) {
-        key = '$' + key;
-    }
+  if (/^\d+/.test(key)) {
+    key = "$" + key;
+  }
 
-    return key;
+  return key;
 }

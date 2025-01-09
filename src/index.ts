@@ -1,23 +1,14 @@
-export {
-    Translator,
-    TranslatorOptions,
-} from './translator';
+export { Translator, TranslatorOptions } from "./translator";
+
+export { Locales, LocalesContext, LocalesOptions } from "./locales";
 
 export {
-    Locales,
-    LocalesContext,
-    LocalesOptions,
-} from './locales';
+  generateCode,
+  GenerateDirecatoryOptions,
+  GenerateOptions
+} from "./generate/generator";
 
-export {
-    generateCode,
-    GenerateDirecatoryOptions,
-    GenerateOptions,
-} from './generate/generator';
-
-export {
-    parseTranslationData,
-} from './translation';
+export { parseTranslationData } from "./translation";
 
 // const code = generateCode({ ro: {} });
 
